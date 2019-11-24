@@ -1,0 +1,23 @@
+@import '_variables.scss';
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+// Variables
+.button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $buttonColor;
+  border-radius: 50%;
+  cursor: pointer;
+  &:hover{
+    background-color: #999;
+  }
+}
+
+img{
+  -khtml-user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
