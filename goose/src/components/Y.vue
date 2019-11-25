@@ -1,6 +1,6 @@
 <template>
   <div class="button yButton" @click="$emit('honk')">
-    <img class='yIcon' src="/src/assets/img/Y.png" alt="Y">
+    <img class='yIcon' src="src/assets/img/Y.png" alt="Y">
   </div>
 </template>
 

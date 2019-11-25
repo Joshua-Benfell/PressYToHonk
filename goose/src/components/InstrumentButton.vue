@@ -10,7 +10,7 @@ export default {
   props: ['icon', 'name', "active"],
   data () {
     return {
-      baseImgLoc: "/src/assets/img/"
+      baseImgLoc: "src/assets/img/"
     }
   },
   computed:{
