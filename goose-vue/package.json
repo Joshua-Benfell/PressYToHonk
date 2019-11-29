@@ -10,6 +10,7 @@
   "dependencies": {
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.4.3",
+    "cors": "^2.8.5",
     "howler": "^2.1.2",
     "vue": "^2.6.10"
   },
