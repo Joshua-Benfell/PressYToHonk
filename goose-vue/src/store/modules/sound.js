@@ -11,7 +11,7 @@ const actions = {
 };
 
 const mutations = {
-  toggleSound(state) {
+  toggleState(state) {
     state.soundState = !state.soundState;
   }
 };

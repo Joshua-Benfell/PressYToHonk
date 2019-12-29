@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <BTButton />
+    <SoundButton />
     <Y />
     <div
       class="row mx-0 col-12 col-lg-6 offset-lg-3 instrumentTray"
@@ -23,13 +25,17 @@
 <script>
 import InstrumentButton from "./components/InstrumentButton";
 import Y from "./components/Y";
+import SoundButton from "./components/SoundButton";
+import BTButton from "./components/BTButton";
 import { INSTRUMENTS } from "./constants";
 
 export default {
   name: "app",
   components: {
     InstrumentButton,
-    Y
+    Y,
+    SoundButton,
+    BTButton
   },
   data() {
     return {};

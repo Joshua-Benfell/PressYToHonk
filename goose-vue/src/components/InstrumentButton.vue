@@ -1,6 +1,6 @@
 <template>
-  <div class="button instrumentButton" :class="(currentInstrument == name) ? 'currentInstrument' : ''" @click="changeInstrument">
-    <img class="instrumentIcon" :src="imageLoc" :alt="name + '-icon'" />
+  <div class="button smallButton" :class="(currentInstrument == name) ? 'currentInstrument' : ''" @click="changeInstrument">
+    <img class="smallIcon" :src="imageLoc" :alt="name + '-icon'" />
   </div>
 </template>
 
@@ -30,17 +30,6 @@ export default {
 </script>
 
 <style lang="scss">
-.instrumentButton {
-  width: 75px;
-  height: 75px;
-  margin: 10px auto;
-
-  .instrumentIcon {
-    max-width: 50px;
-    max-height: 50px;
-  }
-}
-
 .currentInstrument {
   background-color: $activeGreen !important;
 }

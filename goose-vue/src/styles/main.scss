@@ -14,6 +14,17 @@
   }
 }
 
+.smallButton {
+  width: 75px;
+  height: 75px;
+  margin: 10px auto;
+
+  .smallIcon {
+    max-width: 50px;
+    max-height: 50px;
+  }
+}
+
 img{
   -khtml-user-select: none;
   -o-user-select: none;
