@@ -67,13 +67,7 @@ export default {
           // console.log(this.devices);
           this.$store.dispatch("webBluetooth/discoverServices", this.deviceOptions);  // Find the Service of our BLE device and save it and the characteristics in the store
         })
-        .catch(err => {
-          console.log("Connect: ", err)
-        });
       })
-      .catch(err => {
-        console.log("Add: ", err)
-      });
     },
     disconnect() {
       this.$store.dispatch("webBluetooth/disconnectDevice",this.deviceOptions)  // Let the store do the disconnect.
