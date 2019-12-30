@@ -1,4 +1,10 @@
-import { INSTRUMENTS } from "../../constants";
+import {
+  INSTRUMENTS,
+  SET_INSTRUMENT,
+  SET_MAX_COUNT,
+  SET_CURRENT_COUNT,
+  INCREMENT
+} from "@/constants";
 
 const state = {
   instrument: "honk",
@@ -11,27 +17,27 @@ const getters = {};
 const actions = {
   changeInstrument({ commit }, { newInstrument }) {
     if (newInstrument in INSTRUMENTS) {
-      commit("setInstrument", newInstrument);
-      commit("setMaxCount", INSTRUMENTS[newInstrument]["maxCount"]);
-      commit("setCurrentCount", 0);
+      commit(SET_INSTRUMENT, newInstrument);
+      commit(SET_MAX_COUNT, INSTRUMENTS[newInstrument]["maxCount"]);
+      commit(SET_CURRENT_COUNT, 0);
     }
   },
   changeCurrentCount({ commit }) {
-    commit("incrementCurrentCount");
+    commit(INCREMENT);
   }
 };
 
 const mutations = {
-  setInstrument(state, result) {
+  [SET_INSTRUMENT](state, result) {
     state.instrument = result;
   },
-  setMaxCount(state, result) {
+  [SET_MAX_COUNT](state, result) {
     state.maxCount = result;
   },
-  setCurrentCount(state, result) {
+  [SET_CURRENT_COUNT](state, result) {
     state.currentCount = result;
   },
-  incrementCurrentCount(state) {
+  [INCREMENT](state) {
     if (state.currentCount == state.maxCount - 1) {
       state.currentCount = 0;
     } else {

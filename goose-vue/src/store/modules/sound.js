@@ -1,3 +1,5 @@
+import { TOGGLE_SOUND } from "@/constants";
+
 const state = {
   soundState: true
 };
@@ -6,12 +8,12 @@ const getters = {};
 
 const actions = {
   toggleSound({ commit }) {
-    commit("toggleState");
+    commit(TOGGLE_SOUND);
   }
 };
 
 const mutations = {
-  toggleState(state) {
+  [TOGGLE_SOUND](state) {
     state.soundState = !state.soundState;
   }
 };
