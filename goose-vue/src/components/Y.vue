@@ -23,12 +23,13 @@ export default {
       characteristicUUID: state => state.webBluetoothState.characteristicUUID
     }),
     ...mapGetters({
-      device: "webBluetooth/device",  // Library getter for getting the a device based on the ID
+      device: "webBluetooth/device", // Library getter for getting the a device based on the ID
       deviceServices: "webBluetooth/servicesForDevice",
       serviceCharacteristic: "webBluetooth/characteristicsForService"
     }),
-    connected() { // Method that returns a boolean based on whether we are connected to to a device. This is determined by the device ID and then the object gatt property
-      if(this.deviceID !== ""){
+    connected() {
+      // Method that returns a boolean based on whether we are connected to to a device. This is determined by the device ID and then the object gatt property
+      if (this.deviceID !== "") {
         return this.device(this.deviceID).gatt.connected;
       } else {
         return false;
@@ -36,7 +37,7 @@ export default {
     },
     service() {
       let services = this.deviceServices(this.deviceID);
-      for (let service of services){
+      for (let service of services) {
         if (service.uuid === this.serviceUUID) {
           return service;
         }
@@ -56,7 +57,7 @@ export default {
       return {
         characteristic: this.characteristic,
         value: this.valueToWrite
-      }
+      };
     },
     valueToWrite() {
       let text = this.instrument + "_" + this.currentSound + ".wav";
@@ -66,7 +67,10 @@ export default {
   methods: {
     doHonk() {
       if (this.connected) {
-        this.$store.dispatch("webBluetooth/writeCharacteristic", this.writeOptions);
+        this.$store.dispatch(
+          "webBluetooth/writeCharacteristic",
+          this.writeOptions
+        );
       }
 
       if (this.sound) {

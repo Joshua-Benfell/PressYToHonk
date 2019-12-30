@@ -17,7 +17,7 @@ export default {
       sound: state => state.sound.soundState
     }),
     imageLoc() {
-      let imageName = (this.sound) ? "soundOn.png" : "soundOff.png";
+      let imageName = this.sound ? "soundOn.png" : "soundOff.png";
       let images = require.context("@/assets/img", false, /\.png$/);
       return images("./" + imageName);
     }
@@ -30,5 +30,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

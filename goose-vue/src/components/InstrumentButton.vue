@@ -1,11 +1,14 @@
 <template>
-  <div class="button smallButton" :class="(currentInstrument == name) ? 'currentInstrument' : ''" @click="changeInstrument">
+  <div
+    class="button smallButton"
+    :class="currentInstrument == name ? 'currentInstrument' : ''"
+    @click="changeInstrument"
+  >
     <img class="smallIcon" :src="imageLoc" :alt="name + '-icon'" />
   </div>
 </template>
 
 <script>
-
 import { mapState } from "vuex";
 
 export default {
@@ -22,7 +25,7 @@ export default {
   },
   methods: {
     changeInstrument() {
-      let newInstrument = this.name
+      let newInstrument = this.name;
       this.$store.dispatch("instrument/changeInstrument", { newInstrument });
     }
   }

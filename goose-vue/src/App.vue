@@ -9,7 +9,7 @@
     >
       <span
         class="col-4 col-sm-2"
-        v-for="(instrument) in instruments"
+        v-for="instrument in instruments"
         :key="instrument.id"
       >
         <InstrumentButton
