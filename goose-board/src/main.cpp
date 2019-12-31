@@ -11,6 +11,21 @@
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
 
+
+class Callbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    std::string value = pCharacteristic->getValue();
+    if (value.length() > 0) {
+      Serial.print("Received Value: ");
+      Serial.println(value.c_str());
+    }
+  }
+};
+
+
+
+
+
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
@@ -24,10 +39,12 @@ void setup() {
   BLECharacteristic *pCharacteristic = pService->createCharacteristic(
                                          CHARACTERISTIC_UUID,
                                          BLECharacteristic::PROPERTY_READ |
-                                         BLECharacteristic::PROPERTY_WRITE
+                                         BLECharacteristic::PROPERTY_WRITE |
+                                         BLECharacteristic::PROPERTY_WRITE_NR
                                        );
+  pCharacteristic->setCallbacks(new Callbacks());
 
-  pCharacteristic->setValue("Hello World");
+  pCharacteristic->setValue("");
   pService->start();
   // BLEAdvertising *pAdvertising = pServer->getAdvertising();  // this still is working for backward compatibility
   BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
