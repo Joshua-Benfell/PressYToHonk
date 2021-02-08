@@ -25,11 +25,11 @@
 
 MP3::MP3(uint8_t baud)
 {
-  Serial2.updateBaudRate(baud);//baud rate is 9600bps
-  Serial2.setDebugOutput(true);
+  this->baud = baud;
 }
 void MP3::begin()
 {
+  Serial2.begin(this->baud);//baud rate is 9600bps
   sendCommand(CMD_SEL_DEV, DEV_TF);//select the TF card  
   delay(100);
 }
@@ -178,6 +178,11 @@ void MP3::playCombine(int16_t folderAndIndex[], int8_t number)
 
 void MP3::sendCommand(int8_t command, int16_t dat)
 {
+  Serial.println();
+  Serial.print(command, HEX);
+  Serial.println();
+  Serial.print(dat, HEX);
+  Serial.println();
   delay(20);
   if((command == CMD_PLAY_W_VOL)||(command == CMD_SET_PLAY_MODE)||(command == CMD_PLAY_COMBINE))
   	return;
@@ -215,6 +220,9 @@ void MP3::mp3_5bytes(int8_t command, uint8_t dat)
   Send_buf[3] = dat; //
   Send_buf[4] = 0xef; //
   sendBytes(Send_buf, 5);
+  Serial.println();
+  Serial.print(dat, HEX);
+  Serial.println();
 }
 void MP3::mp3_6bytes(int8_t command, int16_t dat)
 {
@@ -229,5 +237,10 @@ void MP3::mp3_6bytes(int8_t command, int16_t dat)
 }
 void MP3::sendBytes(uint8_t buf[], uint8_t nbytes)
 {
-  Serial2.write(buf, nbytes);
+  Serial.print("\nMP3 Command => ");
+  for(int i=0;i<nbytes;i++){
+    Serial2.write(buf[i]); 
+    Serial.print(buf[i], HEX); 
+  }
+  delay(1000);
 }
