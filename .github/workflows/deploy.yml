@@ -1,30 +1,33 @@
 name: Deploy to Live Environment
-runs-on: ubuntu-latest
-on: [pull_request]
-  branches: 
-    - master
+on: 
+  pull_request:
+    branches:
+      - master
+    types: [closed]
 
 jobs: 
   Build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-      steps:
+    steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
       - run: cd goose-vue
       - run: npm install
       - run: npm run build
   Deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-      steps:
-      - uses: JamesIves/github-pages-deploy-action@3.6.1
-          with:
-            # In order for GitHub to trigger the rebuild of your page you must provide the action with the repositories provided GitHub token.
-            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-            # This is the branch you wish to deploy to, for example gh-pages or docs.
-            BRANCH: gh-pages
-            # The folder in your repository that you want to deploy. If your build script compiles into a directory named build you would put it here. Folder paths cannot have a leading / or ./. If you wish to deploy the root directory you can place a . here.
-            FOLDER: ./goose-vue/dist
-            # If you would like to push the contents of the deployment folder into a specific directory on the deployment branch you can specify it here.
-            BASE_BRANCH: master
-            # If you need to customize the commit message for an integration you can do so.
-            COMMIT_MESSAGE: Deploy To gh-pages
+    steps:
+    - uses: JamesIves/github-pages-deploy-action@3.6.1
+      with:
+        # In order for GitHub to trigger the rebuild of your page you must provide the action with the repositories provided GitHub token.
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        # This is the branch you wish to deploy to, for example gh-pages or docs.
+        BRANCH: gh-pages
+        # The folder in your repository that you want to deploy. If your build script compiles into a directory named build you would put it here. Folder paths cannot have a leading / or ./. If you wish to deploy the root directory you can place a . here.
+        FOLDER: ./goose-vue/dist
+        # If you would like to push the contents of the deployment folder into a specific directory on the deployment branch you can specify it here.
+        BASE_BRANCH: master
+        # If you need to customize the commit message for an integration you can do so.
+        COMMIT_MESSAGE: Deploy To gh-pages
