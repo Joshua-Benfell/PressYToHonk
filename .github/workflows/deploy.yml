@@ -9,13 +9,15 @@ jobs:
   Build:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    env: 
+      working-directory: ./goose-vue
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
-        with:
-          path: ./goose-vue 
       - run: npm install
+        working-directory: ${{env.working-directory}}
       - run: npm run build
+        working-directory: ${{env.working-directory}}
   Deploy:
     needs: Build
     if: github.event.pull_request.merged == true
