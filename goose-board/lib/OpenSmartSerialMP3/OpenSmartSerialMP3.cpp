@@ -23,224 +23,194 @@
 /****************************************************************************/
 #include "OpenSmartSerialMP3.h"
 
-MP3::MP3(uint8_t baud)
-{
-  this->baud = baud;
-}
-void MP3::begin()
-{
-  Serial2.begin(this->baud);//baud rate is 9600bps
-  sendCommand(CMD_SEL_DEV, DEV_TF);//select the TF card  
-  delay(100);
-}
-void MP3::play()
-{
-  sendCommand(CMD_PLAY);
-}
-void MP3::pause()
-{
-  sendCommand(CMD_PAUSE);
+MP3::MP3(void) {}
+
+void MP3::begin() {
+	selectSD();
 }
 
-void MP3::nextSong()
-{
-  sendCommand(CMD_NEXT_SONG);
+void MP3::selectSD() {
+	sendCommand(CMD_SEL_DEV, DEV_TF);//select the TF card
 }
 
-void MP3::previousSong()
-{
-  sendCommand(CMD_PREV_SONG);
+void MP3::play() {
+  	sendCommand(CMD_PLAY);
 }
 
-void MP3::volumeUp()
-{
-  sendCommand(CMD_VOLUME_UP);
+void MP3::pause() {
+  	sendCommand(CMD_PAUSE);
 }
 
-void MP3::volumeDown()
-{
-  sendCommand(CMD_VOLUME_DOWN);
+void MP3::nextSong() {
+  	sendCommand(CMD_NEXT_SONG);
 }
 
-void MP3::forward()
-{
-  sendCommand(CMD_FORWARD);
+void MP3::previousSong() {
+  	sendCommand(CMD_PREV_SONG);
 }
 
-void MP3::rewind()
-{
-  sendCommand(CMD_REWIND);
+void MP3::volumeUp() {
+  	sendCommand(CMD_VOLUME_UP);
 }
 
-void MP3::stopPlay()
-{
-  sendCommand(CMD_STOP);
+void MP3::volumeDown() {
+  	sendCommand(CMD_VOLUME_DOWN);
 }
 
-void MP3::stopInject()
-{
-  sendCommand(CMD_STOP_INJECT);
+void MP3::forward() {
+  	sendCommand(CMD_FORWARD);
 }
-void MP3::singleCycle()
-{
-  mp3_5bytes(CMD_SET_PLAY_MODE, SINGLE_CYCLE);
+
+void MP3::rewind() {
+  	sendCommand(CMD_REWIND);
+}
+
+void MP3::stopPlay() {
+  	sendCommand(CMD_STOP);
+}
+
+void MP3::stopInject() {
+  	sendCommand(CMD_STOP_INJECT);
+}
+
+void MP3::singleCycle() {
+	mp3_5bytes(CMD_SET_PLAY_MODE, SINGLE_CYCLE);
 }	
-void MP3::allCycle()
-{
-  mp3_5bytes(CMD_SET_PLAY_MODE, ALL_CYCLE);
+
+void MP3::allCycle() {
+	mp3_5bytes(CMD_SET_PLAY_MODE, ALL_CYCLE);
 }
 
-void MP3::playWithIndex(int8_t index)
-{
-  sendCommand(CMD_PLAY_W_INDEX,index);
+void MP3::playWithIndex(uint8_t index) {
+  	sendCommand(CMD_PLAY_W_INDEX,index);
 }
 
-void MP3::injectWithIndex(int8_t index)
-{
-  sendCommand(CMD_INJECT_W_INDEX,index);
+void MP3::injectWithIndex(uint8_t index) {
+  	sendCommand(CMD_INJECT_W_INDEX,index);
 }
 
-uint8_t MP3::getStatus()
-{
-  int dat;
-  while(Serial2.available())dat = Serial2.read();
-  sendCommand(CMD_CHECK_STATUS);
-  while(Serial2.available()<9);
-  while(Serial2.read() != CMD_CHECK_STATUS)//the status come after the command 
-  	{
-  	  
-	//  Serial.print(dat,HEX);
-	//  Serial.print(" ");
-  	}
-  dat = Serial2.read();
- // Serial.print("*");
-//  Serial.println(dat);
-  return dat;
-  
+uint8_t MP3::getStatus() {
+	int dat;
+	while ( Serial2.available() ) {
+		dat = Serial2.read();
+	}
+	sendCommand(CMD_CHECK_STATUS);
+	while ( Serial2.available() < 9 );
+	while ( Serial2.read() != CMD_CHECK_STATUS ) {  // the status come after the command	
+		//  Serial.print(dat,HEX);
+		//  Serial.print(" ");
+	}
+	dat = Serial2.read();
+	// Serial.print("*");
+	//  Serial.println(dat);
+	return dat;
 }
 
-void MP3::setVolume(int8_t vol)
-{
-  mp3_5bytes(CMD_SET_VOLUME, vol);
+void MP3::setVolume(uint8_t vol) {
+  	mp3_5bytes(CMD_SET_VOLUME, vol);
 }
 
-void MP3::playWithFileName(int8_t directory, int8_t file)
-{
-  int16_t dat;
-  dat = ((int16_t)directory) << 8;
-  dat |= file;
-  sendCommand(CMD_PLAY_FILE_NAME, dat);
+void MP3::playWithFileName(uint8_t directory, uint8_t file) {
+	uint8_t dat[2] = {directory, file};
+	sendCommand(CMD_PLAY_FILE_NAME, dat);
 }
 
-void MP3::playWithVolume(int8_t index, int8_t volume)
-{
-  if(volume < 0) volume = 0;          //min volume
-  else if(volume > 0x1e) volume = 0x1e;//max volume
-  int16_t dat;
-  dat = ((int16_t)volume) << 8;
-  dat |= index;
-  mp3_6bytes(CMD_PLAY_W_VOL, dat);
+void MP3::playWithVolume(uint8_t index, uint8_t volume) {
+	if (volume < 0) {
+		volume = 0;          //min volume
+	}
+	else if (volume > 0x1e) {
+		volume = 0x1e;//max volume
+	}
+	uint8_t dat[2] = {volume, index};
+	mp3_6bytes(CMD_PLAY_W_VOL, dat);
 }
 
 
 /*cycle play with an index*/
-void MP3::cyclePlay(int16_t index)
-{
-  mp3_6bytes(CMD_SET_PLAY_MODE,index);
+void MP3::cyclePlay(uint8_t index[2]) {
+	mp3_6bytes(CMD_SET_PLAY_MODE, index);
 }
 
-void MP3::setCyleMode(int8_t AllSingle)
-{
- //AllSingle parameter should be 0 or 1, 0 is all songs cycle play, 1 is single cycle play
-  if((AllSingle == 0) || (AllSingle == 1))
-    mp3_5bytes(CMD_SET_PLAY_MODE,AllSingle);
-}
-
-
-void MP3::playCombine(int16_t folderAndIndex[], int8_t number)
-{
-  if(number > 15) return;//number of songs combined can not be more than 15
-  uint8_t nbytes;//the number of bytes of the command with starting byte and ending byte
-  nbytes = 2*number + 4;
-  uint8_t Send_buf[nbytes];
-  Send_buf[0] = 0x7e; //starting byte
-  Send_buf[1] = nbytes - 2; //the number of bytes of the command without starting byte and ending byte
-  Send_buf[2] = CMD_PLAY_COMBINE; 
-  for(uint8_t i=0; i < number; i++)//
-  {
-    Send_buf[i*2+3] = (folderAndIndex[i])>>8;
-	Send_buf[i*2+4] = folderAndIndex[i];
-  }
-  Send_buf[nbytes - 1] = 0xef;
-  sendBytes(Send_buf, nbytes);
+void MP3::setCyleMode(uint8_t AllSingle) {
+	//AllSingle parameter should be 0 or 1, 0 is all songs cycle play, 1 is single cycle play
+	if ( (AllSingle == 0) || (AllSingle == 1) ) {
+		mp3_5bytes(CMD_SET_PLAY_MODE, AllSingle);
+	}
 }
 
 
-void MP3::sendCommand(int8_t command, int16_t dat)
-{
-  Serial.println();
-  Serial.print(command, HEX);
-  Serial.println();
-  Serial.print(dat, HEX);
-  Serial.println();
-  delay(20);
-  if((command == CMD_PLAY_W_VOL)||(command == CMD_SET_PLAY_MODE)||(command == CMD_PLAY_COMBINE))
-  	return;
-  else if(command < 0x1F) 
-  {
-	mp3Basic(command);
-  }
-  else if(command < 0x40)
-  { 
-	mp3_5bytes(command, dat);
-  }
-  else if(command < 0x50)
-  { 
+// void MP3::playCombine(int16_t folderAndIndex[], int8_t number)
+// {
+//   if(number > 15) return;//number of songs combined can not be more than 15
+//   uint8_t nbytes;//the number of bytes of the command with starting byte and ending byte
+//   nbytes = 2*number + 4;
+//   uint8_t Send_buf[nbytes];
+//   Send_buf[0] = 0x7e; //starting byte
+//   Send_buf[1] = nbytes - 2; //the number of bytes of the command without starting byte and ending byte
+//   Send_buf[2] = CMD_PLAY_COMBINE; 
+//   for(uint8_t i=0; i < number; i++)//
+//   {
+//     Send_buf[i*2+3] = (folderAndIndex[i])>>8;
+// 	Send_buf[i*2+4] = folderAndIndex[i];
+//   }
+//   Send_buf[nbytes - 1] = 0xef;
+//   sendBytes(Send_buf, nbytes);
+// }
+
+
+void MP3::sendCommand(uint8_t command, uint8_t dat) {
+	delay(20);
+	if ( (command == CMD_PLAY_W_VOL) || (command == CMD_SET_PLAY_MODE) || (command == CMD_PLAY_COMBINE) ) {
+		return;
+	}
+	else if(command < 0x1F) {
+		mp3Basic(command);
+	}
+	else if(command < 0x40)	{ 
+		mp3_5bytes(command, dat);
+	}
+	return;
+}
+
+void MP3::sendCommand(uint8_t command, uint8_t dat[2]) {
 	mp3_6bytes(command, dat);
-  }
-  else return;
- 
 }
 
-void MP3::mp3Basic(int8_t command)
-{
-  uint8_t Send_buf[4];
-  Send_buf[0] = 0x7e; //starting byte
-  Send_buf[1] = 0x02; //the number of bytes of the command without starting byte and ending byte
-  Send_buf[2] = command; 
-  Send_buf[3] = 0xef; //
-  sendBytes(Send_buf, 4);
+void MP3::mp3Basic(uint8_t command) {
+	uint8_t Send_buf[4];
+	Send_buf[0] = 0x7e; //starting byte
+	Send_buf[1] = 0x02; //the number of bytes of the command without starting byte and ending byte
+	Send_buf[2] = command; 
+	Send_buf[3] = 0xef; //
+	sendBytes(Send_buf, 4);
 }
-void MP3::mp3_5bytes(int8_t command, uint8_t dat)
-{
-  uint8_t Send_buf[5];
-  Send_buf[0] = 0x7e; //starting byte
-  Send_buf[1] = 0x03; //the number of bytes of the command without starting byte and ending byte
-  Send_buf[2] = command; 
-  Send_buf[3] = dat; //
-  Send_buf[4] = 0xef; //
-  sendBytes(Send_buf, 5);
-  Serial.println();
-  Serial.print(dat, HEX);
-  Serial.println();
+void MP3::mp3_5bytes(uint8_t command, uint8_t dat) {
+	uint8_t Send_buf[5];
+	Send_buf[0] = 0x7e; //starting byte
+	Send_buf[1] = 0x03; //the number of bytes of the command without starting byte and ending byte
+	Send_buf[2] = command; 
+	Send_buf[3] = dat; //
+	Send_buf[4] = 0xef; //
+	sendBytes(Send_buf, 5);
 }
-void MP3::mp3_6bytes(int8_t command, int16_t dat)
-{
+
+void MP3::mp3_6bytes(uint8_t command, uint8_t dat[2]) {
   uint8_t Send_buf[6];
   Send_buf[0] = 0x7e; //starting byte
   Send_buf[1] = 0x04; //the number of bytes of the command without starting byte and ending byte
   Send_buf[2] = command; 
-  Send_buf[3] = (int8_t)(dat >> 8);//datah
-  Send_buf[4] = (int8_t)(dat); //datal
+  Send_buf[3] = dat[0];
+  Send_buf[4] = dat[1]; //datal
   Send_buf[5] = 0xef; //
   sendBytes(Send_buf,6);
 }
-void MP3::sendBytes(uint8_t buf[], uint8_t nbytes)
-{
-  Serial.print("\nMP3 Command => ");
-  for(int i=0;i<nbytes;i++){
-    Serial2.write(buf[i]); 
-    Serial.print(buf[i], HEX); 
-  }
-  delay(1000);
+
+void MP3::sendBytes(uint8_t buf[], uint8_t nbytes) {
+	Serial.print("\nMP3 Command => ");
+	for (int i=0;i<nbytes;i++) {
+		Serial2.write(buf[i]); 
+		Serial.print(buf[i], HEX); 
+	}
+	delay(1000);
 }

@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
+#include <vector>
 
 /************Command byte**************************/
 /*basic commands*/
@@ -44,10 +45,10 @@
 
 #define CMD_PLAY_COMBINE 0x45//can play combination up to 15 songs
 
-class MP3
-{
+class MP3 {
 public:
-	MP3(uint8_t baud);
+	MP3(void);
+	void selectSD();
 	void begin();
 	void play();
 	void pause();
@@ -61,26 +62,26 @@ public:
 	void stopInject();
 	void singleCycle();
 	void allCycle();
-	void playWithIndex(int8_t index);
-    void injectWithIndex(int8_t index);
+	void playWithIndex(uint8_t index);
+    void injectWithIndex(uint8_t index);
 
 	uint8_t getStatus();
 
-	void setVolume(int8_t vol);
-	void playWithFileName(int8_t directory, int8_t file);
-	void playWithVolume(int8_t index, int8_t volume);
-	void cyclePlay(int16_t index);
-	void setCyleMode(int8_t AllSingle);
-	void playCombine(int16_t folderAndIndex[], int8_t number);
-	void sendBytes(uint8_t buf[], uint8_t nbytes);
+	void setVolume(uint8_t vol);
+	void playWithFileName(uint8_t directory, uint8_t file);
+	void playWithVolume(uint8_t index, uint8_t volume);
+	void cyclePlay(uint8_t index[2]);
+	void setCyleMode(uint8_t AllSingle);
+	// void playCombine(uint8_t folderAndIndex, uint8_t number);
 	
 private:
 	// HardwareSerial myMP3;
-	uint8_t baud;
-	void sendCommand(int8_t command, int16_t dat = 0);
-	void mp3Basic(int8_t command);
-	void mp3_5bytes(int8_t command, uint8_t dat);
-	void mp3_6bytes(int8_t command, int16_t dat);
+	void sendBytes(uint8_t buf[], uint8_t nbytes);
+	void sendCommand(uint8_t command, uint8_t dat = 0);
+	void sendCommand(uint8_t command, uint8_t dat[2]);
+	void mp3Basic(uint8_t command);
+	void mp3_5bytes(uint8_t command, uint8_t dat);
+	void mp3_6bytes(uint8_t command, uint8_t dat[2]);
 };
 
 #endif
