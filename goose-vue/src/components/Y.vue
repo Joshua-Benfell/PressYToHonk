@@ -15,6 +15,7 @@ export default {
   },
   computed: {
     ...mapState({
+      instrumentID: state => state.instrumet.id,
       instrument: state => state.instrument.instrument,
       currentSound: state => state.instrument.currentCount,
       sound: state => state.sound.soundState,
@@ -60,7 +61,7 @@ export default {
       };
     },
     valueToWrite() {
-      let text = this.instrument + "_" + this.currentSound + ".wav";
+      let text = (this.instrumentID + 1) + "_" + (this.currentSound + 1);
       return this.encode(text);
     }
   },
