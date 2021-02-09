@@ -1,6 +1,6 @@
 name: Deploy to Live Environment
 on: 
-  pull_request:
+  push:
     branches:
       - master
     types: [closed]
@@ -12,7 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
-      - run: cd goose-vue
+        with:
+          path: ./goose-vue 
       - run: npm install
       - run: npm run build
   Deploy:
