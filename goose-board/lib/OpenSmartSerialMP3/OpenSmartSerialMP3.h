@@ -2,8 +2,6 @@
 #define _Red_MP3_H__
 
 #include <Arduino.h>
-#include <HardwareSerial.h>
-#include <vector>
 
 /************Command byte**************************/
 /*basic commands*/
@@ -75,7 +73,6 @@ public:
 	// void playCombine(uint8_t folderAndIndex, uint8_t number);
 	
 private:
-	// HardwareSerial myMP3;
 	void sendBytes(uint8_t buf[], uint8_t nbytes);
 	void sendCommand(uint8_t command, uint8_t dat = 0);
 	void sendCommand(uint8_t command, uint8_t dat[2]);
