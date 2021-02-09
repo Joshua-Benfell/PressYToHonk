@@ -1,2 +1,2 @@
 # PressYToHonk
-Site is deploy [here](joshua-benfell.github.io/PressYToHonk)
+Site is deploy through [Github Pages](joshua-benfell.github.io/PressYToHonk)
