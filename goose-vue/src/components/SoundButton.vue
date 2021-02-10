@@ -1,7 +1,10 @@
 <template>
-  <div class="button smallButton float-right mr-2 mr-lg-5" @click="toggleSound">
+  <button
+    class="button smallButton float-right mr-2 mr-lg-5"
+    @click="toggleSound"
+  >
     <img class="smallIcon" :src="imageLoc" alt="soundIcon" />
-  </div>
+  </button>
 </template>
 
 <script>

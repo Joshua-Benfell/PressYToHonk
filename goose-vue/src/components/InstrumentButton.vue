@@ -1,11 +1,11 @@
 <template>
-  <div
+  <button
     class="button smallButton"
     :class="currentInstrument == name ? 'currentInstrument' : ''"
     @click="changeInstrument"
   >
     <img class="smallIcon" :src="imageLoc" :alt="name + '-icon'" />
-  </div>
+  </button>
 </template>
 
 <script>

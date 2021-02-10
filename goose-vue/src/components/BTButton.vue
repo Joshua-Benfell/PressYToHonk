@@ -1,5 +1,5 @@
 <template>
-  <div
+  <button
     class="button smallButton float-left ml-2 ml-lg-5"
     :class="connected ? 'btConnected' : ''"
     @click="toggleBTConnection"
@@ -9,7 +9,7 @@
       src="@/assets/img/bluetoothOff.png"
       alt="bluetoothIcon"
     />
-  </div>
+  </button>
 </template>
 
 <script>

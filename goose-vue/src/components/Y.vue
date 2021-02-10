@@ -1,7 +1,7 @@
 <template>
-  <div class="button yButton" @click="doHonk">
+  <button class="button yButton" @click="doHonk">
     <img class="yIcon" src="@/assets/img/Y.png" alt="Y" />
-  </div>
+  </button>
 </template>
 
 <script>
