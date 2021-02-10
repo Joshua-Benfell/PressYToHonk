@@ -1,8 +1,10 @@
 <template>
   <button
-    class="button smallButton float-left ml-2 ml-lg-5"
+    class="button smallButton"
     :class="connected ? 'btConnected' : ''"
     @click="toggleBTConnection"
+    @mouseup="mouseup"
+    ref="button"
   >
     <img
       class="smallIcon"
@@ -92,16 +94,12 @@ export default {
           let deviceID = "";
           this.$store.dispatch("webBluetoothState/setDeviceID", { deviceID }); // Update the device ID in the store.
         });
+    },
+    mouseup() {
+      this.$refs.button.blur();
     }
   }
 };
 </script>
 
-<style lang="scss">
-.btConnected {
-  background-color: $bluetoothColor !important;
-  &:hover {
-    background-color: $bluetoothHover !important;
-  }
-}
-</style>
+<style lang="scss"></style>

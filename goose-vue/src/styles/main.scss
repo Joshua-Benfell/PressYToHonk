@@ -1,28 +1,10 @@
-@import '_variables.scss';
-@import 'node_modules/bootstrap/scss/bootstrap';
-@import 'node_modules/bootstrap-vue/src/index.scss';
-// Variables
-.button{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: $buttonColor;
-  border-radius: 50%;
-  cursor: pointer;
-  &:hover{
-    background-color: $buttonActive;
-  }
-}
+@import "variables";
+@import "buttons";
+@import "layout";
 
-.smallButton {
-  width: 75px;
-  height: 75px;
-  margin: 10px auto;
-
-  .smallIcon {
-    max-width: 50px;
-    max-height: 50px;
-  }
+body, html, #app {
+  margin: 0;
+  height: 100%;
 }
 
 img{

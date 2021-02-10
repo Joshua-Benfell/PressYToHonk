@@ -3,7 +3,6 @@ import App from "./App.vue";
 import store from "./store";
 import "./styles/main.scss";
 
-// Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 new Vue({
   store,
