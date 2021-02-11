@@ -1,10 +1,8 @@
-@import 'node_modules/bootstrap/scss/mixins';
-@import 'node_modules/bootstrap/scss/functions';
-@import 'node_modules/bootstrap/scss/_variables';
-
-$buttonColor: #bbb;
-$buttonActive: #999;
-$activeGreen: #6ccca5;
-$errorRed: #EF4836; 
-$bluetoothColor: #006ed6;
-$bluetoothHover: #003dc2;
+$buttonColour: #bbb;
+$buttonHover: darken($buttonColour, 10%);
+$buttonBorderFocus: lighten($buttonColour, 10%);
+$selectedColour: #6ccca5;
+$selectedHover: darken($selectedColour, 10%);
+$errorColour: #EF4836; 
+$bluetoothColour: #006ed6;
+$bluetoothHover: darken($bluetoothColour, 10%);

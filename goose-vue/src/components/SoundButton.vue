@@ -1,7 +1,9 @@
 <template>
   <button
-    class="button smallButton float-right mr-2 mr-lg-5"
+    class="button smallButton"
     @click="toggleSound"
+    @mouseup="mouseup"
+    ref="button"
   >
     <img class="smallIcon" :src="imageLoc" alt="soundIcon" />
   </button>
@@ -28,6 +30,9 @@ export default {
   methods: {
     toggleSound() {
       this.$store.dispatch("toggleSound");
+    },
+    mouseup() {
+      this.$refs.button.blur();
     }
   }
 };

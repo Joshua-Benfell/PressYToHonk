@@ -1,0 +1,56 @@
+.button{
+	justify-content: center;
+	align-items: center;
+	background-color: $buttonColour;
+	border-radius: 50%;
+	border: none;
+	box-shadow: #555 0px 6px 12px 0px;
+	transform: translateY(0);
+	cursor: pointer;
+	&:hover{
+		background-color: $buttonHover;
+	}
+	&:focus {
+		box-shadow: none;
+		transform: translateY(6px);
+		outline: none;
+		box-shadow: 0 0 0 4px rgba(0, 10, 30, 0.2);
+	}
+}
+
+.smallButton {
+	width: 75px;
+	height: 75px;
+	.smallIcon {
+		max-width: 50px;
+		max-height: 50px;
+	}
+}
+
+.btConnected {
+	background-color: $bluetoothColour;
+	&:hover {
+		background-color: $bluetoothHover;
+	}
+}
+
+.yButton {
+	height: 200px;
+	width: 200px;
+	margin: 0 auto;
+	.yIcon {
+		max-width: 125px;
+		max-height: 125px;
+	}
+}
+
+.instrumentButton {
+	margin: 10px auto;
+	display: block;
+	&.currentInstrument {
+		background-color: $selectedColour;
+		&:hover {
+			background-color: $selectedHover;
+		}
+	}
+}
