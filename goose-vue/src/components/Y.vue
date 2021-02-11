@@ -61,7 +61,6 @@ export default {
     },
     valueToWrite() {
       let text = this.instrument.id + 1 + "," + (this.currentSound + 1);
-      console.log(text);
       return this.encode(text);
     }
   },
