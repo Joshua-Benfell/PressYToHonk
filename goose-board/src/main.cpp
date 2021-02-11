@@ -3,6 +3,8 @@
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
+#include <queue>
+#include <MusicTrack.h>
 
 /* BEGIN DEBUG DEFINITIONS */
 #define DEBUG 1
@@ -26,6 +28,9 @@
 MP3 mp3;
 /* END MP3 DEFINITIONS */
 
+/* BEGIN QUEUE DEFINITIONS */
+std::queue<MusicTrack_t> musicQueue;
+/* END QUEUE DEFINITIONS */
 
 /* BEGIN BLE DEFINITIONS */
 #define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
@@ -35,14 +40,31 @@ MP3 mp3;
 class Callbacks : public BLECharacteristicCallbacks {
 	void onWrite(BLECharacteristic *pCharacteristic) {
 		std::string value = pCharacteristic->getValue();
+		std::string folder;
+		std::string track;
+		bool is_folder = true;
+		for (int i = 0; i < value.length(); i++) {
+			char c = value.at(i);
+			if (isDigit(c)) {
+				if (is_folder) {
+					folder.push_back(c);
+				} else {
+					track.push_back(c);
+				}
+			} else {
+				is_folder = false;
+			}
+		}
 		PRINT("\nReceived Value: ", value.c_str())
+		PRINT("\nFolder: ", folder.c_str());
+		PRINT("\nTrack: ", track.c_str());
+		MusicTrack_t temp = {(uint8_t) atoi(folder.c_str()), (uint8_t) atoi(track.c_str())};
+		musicQueue.push(temp);
 	}
 };
 /* END BLE DEFINITIONS */
 
-// enum folders_reference{
-//     honk = 1, glass, harmonica, soap, trash_lid, walkie_talkie
-// } folders;
+
 
 void setup() {
 	#if DEBUG
@@ -51,6 +73,8 @@ void setup() {
 
 	Serial2.begin(MP3_BAUD);
 	mp3.begin();
+	delay(100);
+	mp3.setVolume(0x10);
 
 	PRINTS("\nStarting BLE work!")
 
@@ -79,5 +103,13 @@ void setup() {
 }
 
 void loop() {
-	delay(2000);
+	if (!musicQueue.empty()) {
+		MusicTrack_t next = musicQueue.front();
+		PRINT("\nFolder: ", next.folder);
+		PRINT("\nTrack: ", next.track);
+		mp3.playWithFileName(next.folder, next.track);
+		musicQueue.pop();
+	} else {
+		delay(200);
+	}
 }
