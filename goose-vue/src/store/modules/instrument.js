@@ -7,7 +7,7 @@ import {
 } from "@/constants";
 
 const state = {
-  instrument: "honk",
+  instrument: null,
   maxCount: 5,
   currentCount: 0
 };
@@ -17,7 +17,8 @@ const getters = {};
 const actions = {
   changeInstrument({ commit }, { newInstrument }) {
     if (newInstrument in INSTRUMENTS) {
-      commit(SET_INSTRUMENT, newInstrument);
+      let id = INSTRUMENTS[newInstrument].id;
+      commit(SET_INSTRUMENT, { id, name: newInstrument });
       commit(SET_MAX_COUNT, INSTRUMENTS[newInstrument]["maxCount"]);
       commit(SET_CURRENT_COUNT, 0);
     }

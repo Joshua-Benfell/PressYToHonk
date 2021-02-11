@@ -15,7 +15,6 @@ export default {
   },
   computed: {
     ...mapState({
-      instrumentID: state => state.instrumet.id,
       instrument: state => state.instrument.instrument,
       currentSound: state => state.instrument.currentCount,
       sound: state => state.sound.soundState,
@@ -61,7 +60,8 @@ export default {
       };
     },
     valueToWrite() {
-      let text = (this.instrumentID + 1) + "_" + (this.currentSound + 1);
+      let text = this.instrument.id + 1 + "," + (this.currentSound + 1);
+      console.log(text);
       return this.encode(text);
     }
   },
@@ -79,7 +79,7 @@ export default {
         let filePath = require.context("@/assets/sounds", false, /\.wav$/);
         let sound = new Howl({
           src: filePath(
-            "./" + this.instrument + "_" + this.currentSound + ".wav"
+            "./" + this.instrument.name + "_" + this.currentSound + ".wav"
           )
         });
         sound.play();
