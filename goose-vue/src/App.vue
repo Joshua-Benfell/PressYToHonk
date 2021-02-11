@@ -40,6 +40,10 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    let newInstrument = "honk";
+    this.$store.dispatch("instrument/changeInstrument", { newInstrument });
+  },
   computed: {
     instruments() {
       return INSTRUMENTS;
